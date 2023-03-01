@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
+          crossorigin="anonymous">
+
+    <title>Admin panel</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 p-0" th:object="${admin}">
+            <div class="card text-white bg-dark" style="height: 60px">
+                <div class="card-body">
+                    <p class="card-text" style="font-size: 20px; position: absolute; top: 12px">
+                        <strong>
+                            <td th:text="${admin.getUsername()}"></td>
+                        </strong>
+
+                        with roles:
+
+                    <td>
+                        <th:block th:each="role : ${admin.getRoles()}">
+                                            <span th:switch="${role.getRole()}">
+                                             <span th:case="'ROLE_ADMIN'">ADMIN</span>
+                                               <span th:case="'ROLE_USER'">USER</span>
+                                                    </span>
+                        </th:block>
+                    </td>
+                    </p>
+
+                    <div class="float-right">
+                        <a href="/logout" style="color: darkgrey" class="card-link">Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="list-group">
+                        <a href="/admin" class="list-group-item list-group-item-action active"
+                           aria-current="true">Admin</a>
+
+                        <a href="adminUser" class="list-group-item list-group-item-action text-primary">User</a>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="page-header">
+                        <h1>Admin panel</h1>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-link" type="button">
+                            <a href="/admin">Users table</a>
+                        </button>
+
+                        <button type="button" class="btn btn-outline-info"
+                                style="color: darkslategrey; border-color: lightgrey">New User
+                        </button>
+                    </div>
+                    <div class="card">
+                        <h5 class="card-header">
+                            Add new user
+                        </h5>
+                        <div class="card-body">
+                            <form style="margin:0 auto; text-align: center; width: 300px"
+                                  th:method="POST" th:action="@{/admin/new}" th:object="${user}">
+                                <div class="form-group">
+                                    <label for="firstname"><strong>First name</strong></label>
+                                    <input type="text" th:field="*{firstname}" class="form-control" id="firstname"
+                                           placeholder="First name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="lastname"><strong>Last name</strong></label>
+                                    <input type="text" th:field="*{lastname}" class="form-control" id="lastname"
+                                           placeholder="Last name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="age"><strong>Age</strong></label>
+                                    <input type="text" th:field="*{age}" class="form-control" id="age"
+                                           placeholder="Age">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email"><strong>Email</strong></label>
+                                    <input type="email" th:field="*{email}" class="form-control" id="email"
+                                           placeholder="Email">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password"><strong>Password</strong></label>
+                                    <input type="password" th:field="*{password}" class="form-control" id="password"
+                                           placeholder="Password">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="role"><strong>Role</strong></label>
+                                    <select name="selectedRoles" multiple class="form-control" size="2"
+                                            aria-label="size 2 select example" id="role" style="height: 60px">
+                                        <div th:each="role : ${allRoles}">
+                                            <option th:text="${role.getUnRole()}" th:value="${role.getId()}"
+                                                    name="roles">
+                                            </option>
+                                        </div>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="card text-white" style="font-size:130%; width:auto; height: 45px;
+                              background-color: green;margin:0 auto;"> Add new user
+                                </button>
+                            </form>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
