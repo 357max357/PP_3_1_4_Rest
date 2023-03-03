@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+
+    <title>User page</title>
+</head>
+<body>
+<header>
+    <div class="container-fluid" style="padding: 0">
+        <div class="row-cols-auto">
+            <div class="col-12">
+                <nav class="navbar navbar-expand navbar-dark bg-dark sticky-top">
+                    <div class="collapse navbar-collapse" id="user">
+                        <div style="padding-left: 15px">
+                            <div class="navbar-nav mr-auto mb-auto mb-lg-0">
+                                <span class="navbar-brand text-center fw-bold" style="margin-right: 7px"
+                                      th:utext="${user.email}">user</span>
+                                <span class="navbar-brand">with roles:</span>
+                                <span class="navbar-brand" style="margin-left: -10px"
+                                      th:each="role : ${user.getRoles()}"
+                                      th:text="${role.getName().replaceFirst('ROLE_', ' ')}">role</span>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="navbar-nav float-lg-right" style="padding-right: 15px">
+                        <div class="nav-item">
+                            <form th:action="@{/logout}" th:method="POST">
+                                <button type="submit" class="btn btn-dark text-right" style="color: gray">Logout
+                                </button>
+                            </form>
+                        </div>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-2" style="padding: 15px 0 0">
+            <ul class="nav flex-column nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#userPanel"
+                       sec:authorize="hasAuthority('ROLE_USER')" role="tab"
+                       aria-controls="v-pills-profile" aria-selected="false">User</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-10 bg-light">
+            <div class="tab-content px-4" style="padding: 15px 0 0; height: 100vh">
+                <div class="tab-pane fade show active" id="userPanel">
+                    <h1>User information-page</h1>
+                    <div class="card my-3">
+                        <div class="card-header"><h5 class="mx-0 my-1">About user</h5></div>
+                        <div class="card-body text-center">
+                            <hr style="color: gray" class="my-1">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Second Name</th>
+                                    <th scope="col">Username</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbody-user"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="user.js"></script>
+
+</body>
+</html>

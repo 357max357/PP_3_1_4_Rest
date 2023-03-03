@@ -1,13 +1,11 @@
 package ru.kata.spring.boot_security.demo.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -17,14 +15,11 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "firstname")
-    private String firstname;
+    @Column(name = "firstName", unique = true)
+    private String firstName;
 
-    @Column(name = "lastname")
-    private String lastname;
-
-    @Column(name = "age")
-    private byte age;
+    @Column(name = "secondName")
+    private String secondName;
 
     @Column(name = "email")
     private String email;
@@ -32,48 +27,54 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
+    @ManyToMany
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id",
             referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roles_id",
             referencedColumnName = "id"))
 
-    private List<Role> roles;
+    private Set<Role> roles;
 
     public User() {
     }
 
-    public long getId() {
+    public User(String email, String password, Set<Role> roles) {
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(String firstName, String secondName, String email, String password, Set<Role> roles) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String username) {
+        this.firstName = username;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getSecondName() {
+        return secondName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setSecondName(String lastName) {
+        this.secondName = lastName;
     }
 
-    public byte getAge() {
-        return age;
-    }
-
-    public void setAge(byte age) {
-        this.age = age;
-    }
 
     public String getEmail() {
         return email;
@@ -81,23 +82,6 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
     }
 
     @Override
@@ -108,6 +92,23 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
     }
 
     @Override
@@ -134,12 +135,9 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", age=" + age +
+                ", username='" + firstName + '\'' +
+                ", lastName='" + secondName + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
                 '}';
     }
 }
