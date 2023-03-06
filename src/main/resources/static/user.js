@@ -1,22 +1,24 @@
-const address = 'api/user/'
-fetch(address)
-    .then(response => response.json())
-    .catch(error => console.log(error))
+const url = "http://localhost:8080/api/user"
 
-let userPageInfo = ' '
-const showUserInfo = (user) => {
-    const container = document.getElementById("tbody-user")
-    userPageInfo +=
-        `<tr>
-            <td>${user.id}</td>
-            <td>${user.firstName}</td>
-            <td>${user.secondName}</td>
-            <td>${user.email}</td>
-            
-        </tr>`
-    container.innerHTML = userPageInfo
+async function thisUser() {
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            $('#headerEmail').append(data.email);
+            let roles = data.roles.map(role => " " + role.name.substring(5));
+            $('#headerRoles').append(roles);
+
+            let user = `$(
+            <tr>
+                <td>${data.id}</td>
+                <td>${data.firstName}</td>           
+                <td>${data.secondName}</td>           
+                <td>${data.email}</td>
+                <td>${roles}</td>)`;
+            $('#userPanelBody').append(user);
+        })
 }
-fetch(address)
-    .then(response => response.json())
-    .then(data => showUserInfo(data))
-    .catch(error => console.log(error))
+
+$(async function () {
+    await thisUser();
+});
