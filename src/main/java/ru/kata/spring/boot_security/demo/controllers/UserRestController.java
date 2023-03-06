@@ -21,9 +21,8 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<User> getUserPage(Principal principal) {
-        User user = userService.findByEmail(principal.getName());
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(userService.findByEmail(principal.getName()), HttpStatus.OK);
     }
 }

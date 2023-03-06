@@ -19,25 +19,23 @@ public class AdminRestController {
         this.userService = userService;
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
-        List<User> response = userService.getAllUsers();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
-        User response = userService.getUserById(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<HttpStatus> saveNewUserToDb(@RequestBody User user) {
         userService.saveUser(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<HttpStatus> editUserFromDb(@RequestBody User user) {
         userService.updateUser(user);
         return ResponseEntity.ok(HttpStatus.OK);
