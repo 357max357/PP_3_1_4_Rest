@@ -1,5 +1,4 @@
 async function createUser() {
-    //берет данные из страницы
     await fetch("http://localhost:8080/api/admin/roles")
         .then(res => res.json())
         .then(roles => {
