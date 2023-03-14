@@ -28,8 +28,10 @@ public class User implements UserDetails {
     private String password;
 
     @ManyToMany
-    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id",
-            referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roles_id",
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id",
+            referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id",
             referencedColumnName = "id"))
 
     private Set<Role> roles;
@@ -91,7 +93,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return getEmail();
     }
 
     public void setPassword(String password) {
